@@ -1,37 +1,54 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html lang='en-us'>
 
-You can use the [editor on GitHub](https://github.com/jabrunin001/jabrunin001.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+<head>
+<title>Activity 1</title>
+</head>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+<body>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+    <h1>Jim Bruning</h1>
 
-```markdown
-Syntax highlighted code block
+<img src="=http://lorempixel.com/400/200" alt="Photo Header">
 
-# Header 1
-## Header 2
-### Header 3
+<br>
 
-- Bulleted
-- List
+<p> I'm 24, play basketball, tennis, and softball. Chicago sports fan and I work at Northwestern. </p>
 
-1. Numbered
-2. List
+<p> I live in Lakeview, I have a couple of roommates, stop drop and roll</p>
+<br>
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+<ul>
+    <li>Facebook</li>
+    <li>Snapchat</li>
+    <li>Insta</li>
+</ul>
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+<br>
 
-### Jekyll Themes
+<table>
+    <tr>
+        <th>Music</th>
+        <th>Movies</th>
+        <th>Sports</th>
+    </tr>
+    <tr>
+        <td>The Who</td>
+        <td>The Departed</td>
+        <td>Football</td>
+    </tr>
+    <tr>
+        <td>Phill Collins</td>
+        <td>Knives Out</td>
+        <td>Tennis</td>
+    </tr>
+</table>
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jabrunin001/jabrunin001.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+<iframe width="420" height="315"
+src="https://www.youtube.com/watch?v=_sZH-psg9yE&ab_channel=FirstWeFeast">
+</iframe>
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+</body>
+</html>
