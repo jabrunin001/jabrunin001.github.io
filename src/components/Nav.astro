@@ -1,63 +1,31 @@
 ---
+import { profile } from "../data/content";
 const links = [
-  { href: "#about", label: "about" },
-  { href: "#skills", label: "skills" },
-  { href: "#experience", label: "work" },
-  { href: "#project", label: "project" },
-  { href: "#contact", label: "contact" },
+  { href: "#work", label: "What I build" },
+  { href: "#project", label: "Project" },
+  { href: "#experience", label: "Experience" },
 ];
 ---
 <header class="nav">
   <div class="container nav-inner">
-    <a href="#top" class="brand mono">◦ jb</a>
+    <a href="#top" class="brand">{profile.name}</a>
     <nav aria-label="Primary">
-      {links.map((l) => <a href={l.href} class="mono" data-spy={l.href}>{l.label}</a>)}
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
+    <a href="#contact" class="btn btn-primary nav-cta">Get in touch</a>
   </div>
 </header>
 
 <style>
-  .nav {
-    position: sticky; top: 0; z-index: 50;
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 1rem; }
-  .brand { font-weight: 600; color: var(--text); font-size: 1.1rem; flex-shrink: 0; }
-  nav { display: flex; gap: 1.4rem; }
-  nav a { color: var(--muted); font-size: .9rem; transition: color .2s; white-space: nowrap; }
-  nav a:hover { color: var(--cyan); }
-  nav a.active { color: var(--cyan); }
-  /* keep ALL links reachable on mobile — just tighten them, never hide */
-  @media (max-width: 620px) {
-    nav { gap: .8rem; }
-    nav a { font-size: .8rem; }
-  }
-  @media (max-width: 380px) {
-    .brand { font-size: 1rem; }
-    nav { gap: .65rem; }
-    nav a { font-size: .72rem; }
-  }
+  .nav { position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.8); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 1rem; }
+  .brand { color: var(--navy); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; flex-shrink: 0; }
+  nav { display: flex; gap: 1.6rem; }
+  nav a { color: var(--slate); font-size: .95rem; font-weight: 500; }
+  nav a:hover { color: var(--navy); }
+  .nav-cta { padding: .5rem 1rem; font-size: .9rem; }
+  @media (max-width: 760px) { nav { display: none; } }
+  @media (max-width: 420px) { .brand { font-size: .95rem; } .nav-cta { padding: .45rem .8rem; } }
 </style>
-
-<script>
-  // Highlight the nav link for the section currently in view.
-  const links = document.querySelectorAll<HTMLAnchorElement>("nav a[data-spy]");
-  const byHref = new Map([...links].map((a) => [a.getAttribute("data-spy"), a]));
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          links.forEach((a) => a.classList.remove("active"));
-          byHref.get("#" + e.target.id)?.classList.add("active");
-        }
-      }
-    },
-    { rootMargin: "-45% 0px -50% 0px" }
-  );
-  ["about", "skills", "experience", "project", "contact"].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) io.observe(el);
-  });
-</script>

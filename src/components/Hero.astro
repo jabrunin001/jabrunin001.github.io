@@ -1,54 +1,55 @@
 ---
-import { profile } from "../data/content";
+import { profile, terminalSnippet } from "../data/content";
 ---
 <section id="top" class="hero">
-  <div class="aurora" aria-hidden="true"></div>
+  <div class="hero-gradient" aria-hidden="true"></div>
   <div class="container hero-inner">
-    <p class="mono kicker">{profile.location}</p>
-    <h1>{profile.name}</h1>
-    <p class="role">{profile.role}</p>
-    <p class="tagline">{profile.tagline}</p>
-    <div class="cta">
-      <a class="btn primary" href="#project">View work</a>
-      <a class="btn" href={profile.github} target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href={`mailto:${profile.email}`}>Email</a>
-      <a class="btn" href="/resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    <div class="hero-copy">
+      <p class="eyebrow">{profile.role} · {profile.location}</p>
+      <h1>{profile.headline}</h1>
+      <p class="lead hero-sub">{profile.sub}</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#project">View work</a>
+        <a class="btn btn-secondary" href="/resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      </div>
     </div>
-    <div class="chips">
-      {profile.heroMetrics.map((m) => (
-        <div class="chip"><span class="mono val">{m.value}</span><span class="lbl">{m.label}</span></div>
-      ))}
+    <div class="card term" role="img" aria-label="Terminal output: dbt test suite passing, 19 of 19 checks">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <div class="term-body">
+        {terminalSnippet.map((l) => (
+          <div class:list={["line", { pass: l.includes("PASS") }]}>{l}</div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .hero { position: relative; padding: 8rem 0 6rem; overflow: hidden; }
-  .aurora {
-    position: absolute; inset: -40% -10% auto -10%; height: 600px;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--violet) 35%, transparent), transparent 70%),
-                radial-gradient(closest-side, color-mix(in srgb, var(--cyan) 30%, transparent), transparent 70%);
-    background-position: 20% 0, 80% 10%; background-repeat: no-repeat;
-    filter: blur(40px); opacity: .5; animation: drift 16s ease-in-out infinite alternate;
+  .hero { position: relative; padding: 7rem 0 5rem; overflow: hidden; }
+  .hero-gradient {
+    position: absolute; inset: 0 0 auto 0; height: 680px; z-index: 0;
+    background:
+      radial-gradient(45% 60% at 12% 8%, rgba(0,212,255,.45), transparent 60%),
+      radial-gradient(50% 70% at 48% -5%, rgba(99,91,255,.45), transparent 60%),
+      radial-gradient(45% 65% at 82% 12%, rgba(255,111,216,.40), transparent 60%),
+      radial-gradient(40% 60% at 98% 45%, rgba(255,153,102,.40), transparent 60%),
+      linear-gradient(120deg, rgba(0,212,255,.12), rgba(169,96,238,.12), rgba(255,111,216,.10));
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    animation: drift 18s ease-in-out infinite alternate;
   }
-  @keyframes drift { to { transform: translateX(40px) translateY(20px) scale(1.05); } }
-  .hero-inner { position: relative; }
-  .kicker { color: var(--muted); font-size: .85rem; margin-bottom: 1rem; }
-  h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
-  .role { font-size: clamp(1.1rem, 3vw, 1.6rem); color: var(--muted); margin-top: .4rem; }
-  .tagline { font-size: clamp(1.2rem, 3.5vw, 1.9rem); color: var(--cyan); font-weight: 600; margin-top: 1.4rem; max-width: 22ch; }
+  @keyframes drift { to { transform: translateX(-30px) translateY(10px) scale(1.04); } }
+  .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
+  .hero-copy h1 { font-size: clamp(2.6rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--navy); }
+  .hero-sub { margin-top: 1.4rem; }
   .cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
-  .btn {
-    padding: .7rem 1.2rem; border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text); font-size: .95rem; transition: all .2s;
+  .term { padding: 0; overflow: hidden; box-shadow: var(--shadow-lg); }
+  .term-bar { display: flex; gap: .4rem; padding: .8rem 1rem; border-bottom: 1px solid var(--border); background: #fbfcfe; }
+  .term-bar span { width: 11px; height: 11px; border-radius: 50%; background: #d7dde5; }
+  .term-body { padding: 1.2rem 1.3rem; font-family: var(--font-mono); font-size: .82rem; line-height: 1.7; color: var(--slate); }
+  .term-body .line { white-space: pre; }
+  .term-body .pass { color: #15803d; font-weight: 500; }
+  @media (max-width: 880px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .term { max-width: 460px; }
   }
-  .btn:hover { border-color: var(--cyan); transform: translateY(-1px); }
-  .btn.primary {
-    background: linear-gradient(135deg, var(--cyan), var(--violet)); color: #06121a; font-weight: 700; border: none;
-    box-shadow: 0 8px 30px -8px color-mix(in srgb, var(--cyan) 60%, transparent);
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 3rem; }
-  .chip { display: flex; flex-direction: column; }
-  .chip .val { font-size: 1.6rem; font-weight: 500; color: var(--text); }
-  .chip .lbl { color: var(--muted); font-size: .85rem; }
 </style>

@@ -1,0 +1,30 @@
+---
+import { profile } from "../data/content";
+---
+<footer class="footer">
+  <div class="container foot-inner">
+    <div>
+      <p class="name">{profile.name}</p>
+      <p class="role">{profile.role} · {profile.location}</p>
+    </div>
+    <nav class="foot-links">
+      <a href="#work">What I build</a>
+      <a href="#project">Project</a>
+      <a href="#experience">Experience</a>
+      <a href={`mailto:${profile.email}`}>Email</a>
+    </nav>
+  </div>
+  <div class="container sub"><span>Built with Astro</span><span>© 2026 {profile.name}</span></div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--border); padding: 3rem 0 2rem; background: #fff; }
+  .foot-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+  .name { color: var(--navy); font-weight: 700; }
+  .role { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 1.4rem; }
+  .foot-links a { color: var(--slate); font-size: .92rem; font-weight: 500; }
+  .foot-links a:hover { color: var(--navy); }
+  .sub { display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; }
+</style>

@@ -1,0 +1,25 @@
+---
+import { stats } from "../data/content";
+---
+<section class="stats">
+  <div class="container reveal">
+    <div class="grid">
+      {stats.map((s) => (
+        <div class="stat">
+          <div class="val tnum">{s.value}</div>
+          <div class="lbl">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats { background: var(--navy); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .stat .val { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(120deg, #8ad4ff, #b69cff); -webkit-background-clip: text;
+    background-clip: text; -webkit-text-fill-color: transparent; color: #b69cff; }
+  .lbl { color: #8ea2c0; font-size: .92rem; margin-top: .5rem; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; } }
+</style>

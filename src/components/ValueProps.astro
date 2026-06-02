@@ -1,0 +1,31 @@
+---
+import { valueProps } from "../data/content";
+import Icon from "./Icon.astro";
+---
+<section id="work">
+  <div class="container reveal">
+    <p class="eyebrow">What I build</p>
+    <h2 class="section-title">From fragmented data to platforms teams trust.</h2>
+    <div class="grid">
+      {valueProps.map((p) => (
+        <article class="vp">
+          <div class="ic"><Icon name={p.icon} size={22} /></div>
+          <h3>{p.title}</h3>
+          <p>{p.desc}</p>
+          <p class="metric tnum">{p.metric}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-title { margin-bottom: 3rem; max-width: 20ch; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .vp .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(99,91,255,.1); color: var(--accent); margin-bottom: 1.2rem; }
+  .vp h3 { color: var(--navy); font-size: 1.2rem; font-weight: 700; margin-bottom: .6rem; }
+  .vp p { color: var(--slate); }
+  .vp .metric { margin-top: 1rem; font-weight: 700; color: var(--accent); }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+</style>

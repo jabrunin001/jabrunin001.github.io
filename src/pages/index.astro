@@ -2,24 +2,26 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import About from "../components/About.astro";
-import Skills from "../components/Skills.astro";
-import Experience from "../components/Experience.astro";
+import StackStrip from "../components/StackStrip.astro";
+import ValueProps from "../components/ValueProps.astro";
 import FeaturedProject from "../components/FeaturedProject.astro";
-import Impact from "../components/Impact.astro";
+import Experience from "../components/Experience.astro";
+import Stats from "../components/Stats.astro";
 import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
 ---
 <Layout>
   <Nav />
   <main>
     <Hero />
-    <About />
-    <Skills />
-    <Experience />
+    <StackStrip />
+    <ValueProps />
     <FeaturedProject />
-    <Impact />
+    <Experience />
+    <Stats />
     <Contact />
   </main>
+  <Footer />
   <script>
     import "../scripts/reveal.ts";
   </script>

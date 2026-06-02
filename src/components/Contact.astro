@@ -1,25 +1,28 @@
 ---
 import { profile } from "../data/content";
+import Icon from "./Icon.astro";
 ---
-<section id="contact">
-  <div class="container reveal center">
-    <h2 class="section-title">contact</h2>
+<section id="contact" class="contact">
+  <div class="contact-gradient" aria-hidden="true"></div>
+  <div class="container reveal inner">
+    <h2 class="section-title">Let's build something.</h2>
     <p class="lead">Open to Senior / Staff Data Engineering roles — remote, hybrid, or Chicago.</p>
     <div class="links">
-      <a class="btn primary" href={`mailto:${profile.email}`}>{profile.email}</a>
-      <a class="btn" href={profile.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn" href={profile.github} target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-primary" href={`mailto:${profile.email}`}><Icon name="mail" size={18} /> Email me</a>
+      <a class="btn btn-secondary" href={profile.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-secondary" href={profile.github} target="_blank" rel="noopener"><Icon name="github" size={18} /> GitHub</a>
     </div>
-    <p class="foot mono">Built with Astro · {profile.name}</p>
   </div>
 </section>
 
 <style>
-  .center { text-align: center; }
-  .lead { color: var(--text); font-size: 1.1rem; max-width: 50ch; margin: 0 auto; }
+  .contact { position: relative; text-align: center; overflow: hidden; }
+  .contact-gradient { position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(40% 70% at 25% 30%, rgba(99,91,255,.16), transparent 60%),
+      radial-gradient(40% 70% at 75% 60%, rgba(255,111,216,.14), transparent 60%);
+  }
+  .inner { position: relative; z-index: 1; }
+  .lead { margin: 1rem auto 0; }
   .links { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; margin-top: 2rem; }
-  .btn { padding: .7rem 1.2rem; border: 1px solid var(--border); border-radius: 10px; color: var(--text); }
-  .btn:hover { border-color: var(--cyan); }
-  .btn.primary { background: linear-gradient(135deg, var(--cyan), var(--violet)); color: #06121a; font-weight: 700; border: none; }
-  .foot { color: var(--muted); font-size: .8rem; margin-top: 3rem; }
 </style>

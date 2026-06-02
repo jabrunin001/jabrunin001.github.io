@@ -1,0 +1,17 @@
+---
+import { stack } from "../data/content";
+---
+<section class="strip" aria-label="Technologies">
+  <div class="container strip-inner">
+    <span class="label">Working across</span>
+    <ul>{stack.map((s) => <li>{s}</li>)}</ul>
+  </div>
+</section>
+
+<style>
+  .strip { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .strip-inner { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+  .label { font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+  ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  li { color: var(--navy); font-weight: 600; font-size: 1rem; opacity: .75; }
+</style>
