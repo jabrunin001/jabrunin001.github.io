@@ -50,6 +50,7 @@ export const projects = [
     stack: ["Iceberg", "Spark", "dbt", "Trino", "MinIO"],
     links: [
       { label: "GitHub", url: "https://github.com/jabrunin001/iceberg-lakehouse-lab", icon: "github" },
+      { label: "Live dashboard", url: "https://jabrunin001.github.io/iceberg-lakehouse-lab/", icon: "external" },
       { label: "Writeup", url: "https://github.com/jabrunin001/iceberg-lakehouse-lab/blob/main/docs/blog/why-table-format-matters.md", icon: "external" },
     ],
   },
@@ -60,6 +61,7 @@ export const projects = [
     stack: ["Kafka", "Spark", "Redis", "Delta Lake", "FastAPI"],
     links: [
       { label: "GitHub", url: "https://github.com/jabrunin001/realtime-feature-pipeline", icon: "github" },
+      { label: "Live dashboard", url: "https://jabrunin001.github.io/realtime-feature-pipeline/", icon: "external" },
     ],
   },
   {
