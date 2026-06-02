@@ -1,0 +1,47 @@
+---
+import { project } from "../data/content";
+---
+<section id="project">
+  <div class="container reveal">
+    <h2 class="section-title">featured project</h2>
+    <div class="card">
+      <div class="top">
+        <h3 class="mono">{project.name}</h3>
+        <div class="links">
+          <a class="btn" href={project.repo} target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn" href={project.blog} target="_blank" rel="noopener">Blog ↗</a>
+        </div>
+      </div>
+      <p class="pitch">{project.pitch}</p>
+      <div class="stack">{project.stack.map((s) => <span class="badge">{s}</span>)}</div>
+      <pre class="arch mono" aria-label="architecture diagram">{`raw data ─▶ PySpark ─▶ ◇ Iceberg (bronze ▸ silver ▸ gold) ◀─ Trino
+                          │              │
+                     MinIO (S3)     REST catalog`}</pre>
+      <div class="features">
+        {project.features.map((f) => (
+          <div class="feat"><strong>{f.title}</strong><span>{f.desc}</span></div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
+  .top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+  .top h3 { font-size: 1.3rem; color: var(--cyan); }
+  .links { display: flex; gap: .6rem; }
+  .btn { padding: .5rem 1rem; border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: .85rem; }
+  .btn:hover { border-color: var(--cyan); }
+  .pitch { margin-top: 1rem; color: var(--text); max-width: 75ch; }
+  .stack { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+  .badge { font-family: var(--font-mono); font-size: .78rem; padding: .3rem .6rem; border-radius: 6px;
+           background: color-mix(in srgb, var(--violet) 18%, transparent); color: var(--text); }
+  .arch { margin-top: 1.5rem; padding: 1rem; background: var(--bg); border: 1px solid var(--border);
+          border-radius: 10px; font-size: .8rem; color: var(--muted); overflow-x: auto; white-space: pre; }
+  @media (max-width: 600px) { .arch { font-size: .62rem; } }
+  .features { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 1rem; }
+  .feat { display: grid; gap: .25rem; padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+  .feat strong { color: var(--text); font-size: .95rem; }
+  .feat span { color: var(--muted); font-size: .85rem; }
+</style>

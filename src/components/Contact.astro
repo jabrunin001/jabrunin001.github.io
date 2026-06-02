@@ -1,0 +1,25 @@
+---
+import { profile } from "../data/content";
+---
+<section id="contact">
+  <div class="container reveal center">
+    <h2 class="section-title">contact</h2>
+    <p class="lead">Open to Senior / Staff Data Engineering roles — remote, hybrid, or Chicago.</p>
+    <div class="links">
+      <a class="btn primary" href={`mailto:${profile.email}`}>{profile.email}</a>
+      <a class="btn" href={profile.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href={profile.github} target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p class="foot mono">Built with Astro · {profile.name}</p>
+  </div>
+</section>
+
+<style>
+  .center { text-align: center; }
+  .lead { color: var(--text); font-size: 1.1rem; max-width: 50ch; margin: 0 auto; }
+  .links { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; margin-top: 2rem; }
+  .btn { padding: .7rem 1.2rem; border: 1px solid var(--border); border-radius: 10px; color: var(--text); }
+  .btn:hover { border-color: var(--cyan); }
+  .btn.primary { background: linear-gradient(135deg, var(--cyan), var(--violet)); color: #06121a; font-weight: 700; border: none; }
+  .foot { color: var(--muted); font-size: .8rem; margin-top: 3rem; }
+</style>

@@ -1,0 +1,54 @@
+---
+import { profile } from "../data/content";
+---
+<section id="top" class="hero">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <p class="mono kicker">{profile.location}</p>
+    <h1>{profile.name}</h1>
+    <p class="role">{profile.role}</p>
+    <p class="tagline">{profile.tagline}</p>
+    <div class="cta">
+      <a class="btn primary" href="#project">View work</a>
+      <a class="btn" href={profile.github} target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href={`mailto:${profile.email}`}>Email</a>
+      <a class="btn" href="/resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    </div>
+    <div class="chips">
+      {profile.heroMetrics.map((m) => (
+        <div class="chip"><span class="mono val">{m.value}</span><span class="lbl">{m.label}</span></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; padding: 8rem 0 6rem; overflow: hidden; }
+  .aurora {
+    position: absolute; inset: -40% -10% auto -10%; height: 600px;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--violet) 35%, transparent), transparent 70%),
+                radial-gradient(closest-side, color-mix(in srgb, var(--cyan) 30%, transparent), transparent 70%);
+    background-position: 20% 0, 80% 10%; background-repeat: no-repeat;
+    filter: blur(40px); opacity: .5; animation: drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift { to { transform: translateX(40px) translateY(20px) scale(1.05); } }
+  .hero-inner { position: relative; }
+  .kicker { color: var(--muted); font-size: .85rem; margin-bottom: 1rem; }
+  h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+  .role { font-size: clamp(1.1rem, 3vw, 1.6rem); color: var(--muted); margin-top: .4rem; }
+  .tagline { font-size: clamp(1.2rem, 3.5vw, 1.9rem); color: var(--cyan); font-weight: 600; margin-top: 1.4rem; max-width: 22ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+  .btn {
+    padding: .7rem 1.2rem; border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-size: .95rem; transition: all .2s;
+  }
+  .btn:hover { border-color: var(--cyan); transform: translateY(-1px); }
+  .btn.primary {
+    background: linear-gradient(135deg, var(--cyan), var(--violet)); color: #06121a; font-weight: 700; border: none;
+    box-shadow: 0 8px 30px -8px color-mix(in srgb, var(--cyan) 60%, transparent);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 3rem; }
+  .chip { display: flex; flex-direction: column; }
+  .chip .val { font-size: 1.6rem; font-weight: 500; color: var(--text); }
+  .chip .lbl { color: var(--muted); font-size: .85rem; }
+</style>

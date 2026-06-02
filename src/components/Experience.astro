@@ -1,0 +1,43 @@
+---
+import { experience, education } from "../data/content";
+---
+<section id="experience">
+  <div class="container reveal">
+    <h2 class="section-title">work</h2>
+    <div class="timeline">
+      {experience.map((job) => (
+        <article class="job">
+          <div class="head">
+            <h3>{job.role} <span class="org">· {job.org}</span></h3>
+            <span class="mono period">{job.period}</span>
+          </div>
+          <ul>{job.bullets.map((b) => <li>{b}</li>)}</ul>
+        </article>
+      ))}
+    </div>
+    <div class="edu">
+      {education.map((e) => (
+        <p><span class="deg">{e.degree}</span><span class="mono">{e.org} · {e.period}</span></p>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline { display: grid; gap: 2.5rem; border-left: 2px solid var(--border); padding-left: 1.8rem; }
+  .job { position: relative; }
+  .job::before {
+    content: ""; position: absolute; left: -2.25rem; top: .5rem; width: 10px; height: 10px;
+    border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 4px color-mix(in srgb, var(--cyan) 20%, transparent);
+  }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem; align-items: baseline; }
+  .head h3 { font-size: 1.2rem; }
+  .org { color: var(--muted); font-weight: 400; }
+  .period { color: var(--muted); font-size: .85rem; }
+  .job ul { margin-top: .9rem; padding-left: 1.1rem; display: grid; gap: .5rem; }
+  .job li { color: var(--muted); }
+  .edu { margin-top: 2.5rem; display: grid; gap: .5rem; }
+  .edu p { display: flex; flex-wrap: wrap; gap: .6rem; align-items: baseline; }
+  .edu .deg { font-weight: 600; }
+  .edu .mono { color: var(--muted); font-size: .85rem; }
+</style>

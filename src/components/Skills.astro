@@ -1,0 +1,26 @@
+---
+import { skillGroups } from "../data/content";
+---
+<section id="skills">
+  <div class="container reveal">
+    <h2 class="section-title">skills</h2>
+    <div class="grid">
+      {skillGroups.map((g) => (
+        <div class="group">
+          <h3 class="mono">{g.name}</h3>
+          <div class="chips">{g.items.map((i) => <span class="tag">{i}</span>)}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .group h3 { color: var(--cyan); font-size: .9rem; font-weight: 500; margin-bottom: .9rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .tag {
+    padding: .4rem .8rem; background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; font-size: .85rem; color: var(--text);
+  }
+</style>

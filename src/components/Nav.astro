@@ -1,0 +1,32 @@
+---
+const links = [
+  { href: "#about", label: "about" },
+  { href: "#skills", label: "skills" },
+  { href: "#experience", label: "work" },
+  { href: "#project", label: "project" },
+  { href: "#contact", label: "contact" },
+];
+---
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="brand mono">◦ jb</a>
+    <nav>
+      {links.map((l) => <a href={l.href} class="mono">{l.label}</a>)}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { font-weight: 600; color: var(--text); font-size: 1.1rem; }
+  nav { display: flex; gap: 1.4rem; }
+  nav a { color: var(--muted); font-size: .9rem; transition: color .2s; }
+  nav a:hover { color: var(--cyan); }
+  @media (max-width: 620px) { nav { gap: .9rem; } nav a:nth-child(n+4) { display: none; } }
+</style>
