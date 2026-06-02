@@ -132,7 +132,12 @@ jamesbruning-portfolio/
 
 All copy/metrics come from James's CV (`~/CareerOps/career-ops/cv.md`) and profile
 (`config/profile.yml`). Project details come from `~/Projects/iceberg-lakehouse-lab`.
-GitHub/LinkedIn URLs to be confirmed with James (placeholders until then).
+
+**Confirmed links:**
+- GitHub: https://github.com/jabrunin001
+- LinkedIn: https://www.linkedin.com/in/jtb96/
+- Email: jimtbruning@gmail.com
+- Featured project repo: https://github.com/jabrunin001/iceberg-lakehouse-lab
 
 ## Location
 
