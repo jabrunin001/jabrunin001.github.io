@@ -10,8 +10,8 @@ const links = [
 <header class="nav">
   <div class="container nav-inner">
     <a href="#top" class="brand mono">◦ jb</a>
-    <nav>
-      {links.map((l) => <a href={l.href} class="mono">{l.label}</a>)}
+    <nav aria-label="Primary">
+      {links.map((l) => <a href={l.href} class="mono" data-spy={l.href}>{l.label}</a>)}
     </nav>
   </div>
 </header>
@@ -23,10 +23,41 @@ const links = [
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .brand { font-weight: 600; color: var(--text); font-size: 1.1rem; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 1rem; }
+  .brand { font-weight: 600; color: var(--text); font-size: 1.1rem; flex-shrink: 0; }
   nav { display: flex; gap: 1.4rem; }
-  nav a { color: var(--muted); font-size: .9rem; transition: color .2s; }
+  nav a { color: var(--muted); font-size: .9rem; transition: color .2s; white-space: nowrap; }
   nav a:hover { color: var(--cyan); }
-  @media (max-width: 620px) { nav { gap: .9rem; } nav a:nth-child(n+4) { display: none; } }
+  nav a.active { color: var(--cyan); }
+  /* keep ALL links reachable on mobile — just tighten them, never hide */
+  @media (max-width: 620px) {
+    nav { gap: .8rem; }
+    nav a { font-size: .8rem; }
+  }
+  @media (max-width: 380px) {
+    .brand { font-size: 1rem; }
+    nav { gap: .65rem; }
+    nav a { font-size: .72rem; }
+  }
 </style>
+
+<script>
+  // Highlight the nav link for the section currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>("nav a[data-spy]");
+  const byHref = new Map([...links].map((a) => [a.getAttribute("data-spy"), a]));
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          links.forEach((a) => a.classList.remove("active"));
+          byHref.get("#" + e.target.id)?.classList.add("active");
+        }
+      }
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+  ["about", "skills", "experience", "project", "contact"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+</script>

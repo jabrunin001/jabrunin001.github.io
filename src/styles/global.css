@@ -4,7 +4,7 @@
   --card: #151b2b;
   --border: #222b3d;
   --text: #e6eaf2;
-  --muted: #8a93a6;
+  --muted: #9aa4b8;
   --cyan: #22d3ee;
   --violet: #8b5cf6;
   --radius: 14px;
@@ -31,6 +31,22 @@ body {
 img, svg, pre, table { max-width: 100%; }
 
 a { color: var(--cyan); text-decoration: none; }
+
+/* keyboard-visible focus ring (accessibility) */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* gradient text helper with a solid fallback so it's never invisible */
+.gradient-text {
+  color: var(--cyan);
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
 

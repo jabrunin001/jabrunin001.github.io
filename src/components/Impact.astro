@@ -17,6 +17,7 @@ import { impact } from "../data/content";
   .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
           padding: 1.6rem; display: grid; gap: .5rem; }
   .metric { font-size: 1.7rem; font-weight: 500;
+            color: var(--cyan); /* fallback if background-clip unsupported */
             background: linear-gradient(135deg, var(--cyan), var(--violet));
             -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .label { color: var(--muted); font-size: .9rem; }
