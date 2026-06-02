@@ -42,21 +42,37 @@ export const valueProps = [
   },
 ];
 
-export const project = {
-  name: "iceberg-lakehouse-lab",
-  pitch:
-    "A local Apache Iceberg lakehouse. MovieLens and a synthetic event stream move through bronze, silver, and gold with dbt-spark, get checked by dbt tests and Great Expectations, and are queried with Trino, all on object storage.",
-  stack: ["Apache Iceberg", "Spark", "dbt", "Trino", "MinIO", "Great Expectations"],
-  features: [
-    "Time-travel & rollback",
-    "Schema evolution",
-    "Hidden partitioning",
-    "Compaction & maintenance",
-    "Iceberg vs. plain Parquet",
-  ],
-  repo: "https://github.com/jabrunin001/iceberg-lakehouse-lab",
-  blog: "https://github.com/jabrunin001/iceberg-lakehouse-lab/blob/main/docs/blog/why-table-format-matters.md",
-};
+export const projects = [
+  {
+    name: "iceberg-lakehouse-lab",
+    blurb:
+      "A local Apache Iceberg lakehouse. MovieLens and synthetic events move through bronze, silver, and gold with dbt-spark, get checked by dbt tests and Great Expectations, and are queried with Trino.",
+    stack: ["Iceberg", "Spark", "dbt", "Trino", "MinIO"],
+    links: [
+      { label: "GitHub", url: "https://github.com/jabrunin001/iceberg-lakehouse-lab", icon: "github" },
+      { label: "Writeup", url: "https://github.com/jabrunin001/iceberg-lakehouse-lab/blob/main/docs/blog/why-table-format-matters.md", icon: "external" },
+    ],
+  },
+  {
+    name: "realtime-feature-pipeline",
+    blurb:
+      "Kafka viewing-events run through Spark Structured Streaming into Redis and Delta Lake, with point-in-time-correct training and a LightGBM model served over FastAPI with zero train/serve skew.",
+    stack: ["Kafka", "Spark", "Redis", "Delta Lake", "FastAPI"],
+    links: [
+      { label: "GitHub", url: "https://github.com/jabrunin001/realtime-feature-pipeline", icon: "github" },
+    ],
+  },
+  {
+    name: "llm-eval-pipeline",
+    blurb:
+      "Analytics engineering for LLM evals: MMLU scored against three Claude models, modeled in dbt (staging to marts, with Wilson confidence intervals), and served as a live dashboard.",
+    stack: ["dbt", "DuckDB", "Anthropic API", "Streamlit"],
+    links: [
+      { label: "GitHub", url: "https://github.com/jabrunin001/llm-eval-pipeline", icon: "github" },
+      { label: "Live dashboard", url: "https://jabrunin001.github.io/llm-eval-pipeline/", icon: "external" },
+    ],
+  },
+];
 
 export const experience = [
   {

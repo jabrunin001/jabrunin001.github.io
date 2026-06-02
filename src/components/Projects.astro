@@ -1,0 +1,40 @@
+---
+import { projects } from "../data/content";
+import Icon from "./Icon.astro";
+---
+<section id="projects" class="alt">
+  <div class="container reveal">
+    <p class="eyebrow">Projects</p>
+    <h2 class="section-title">Three builds across the data stack.</h2>
+    <div class="grid">
+      {projects.map((p) => (
+        <article class="card proj">
+          <h3 class="mono">{p.name}</h3>
+          <p class="blurb">{p.blurb}</p>
+          <div class="badges">{p.stack.map((s) => <span>{s}</span>)}</div>
+          <div class="links">
+            {p.links.map((l) => (
+              <a class="plink" href={l.url} target="_blank" rel="noopener"><Icon name={l.icon} size={16} /> {l.label}</a>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .alt { background: var(--bg-alt); }
+  .section-title { margin: .4rem 0 3rem; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: stretch; }
+  .proj { display: flex; flex-direction: column; padding: 1.6rem; }
+  .proj h3 { font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent); font-weight: 600; }
+  .blurb { color: var(--slate); font-size: .95rem; margin-top: .8rem; flex: 1; }
+  .badges { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.2rem; }
+  .badges span { font-size: .72rem; font-weight: 600; padding: .25rem .55rem; border-radius: 999px;
+    background: var(--bg-alt); border: 1px solid var(--border); color: var(--muted); }
+  .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); }
+  .plink { display: inline-flex; align-items: center; gap: .35rem; font-size: .88rem; font-weight: 600; color: var(--accent); }
+  .plink:hover { color: var(--accent-hover); }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; gap: 1.2rem; } }
+</style>
