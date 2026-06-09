@@ -1,12 +1,12 @@
 export const profile = {
   name: "James Bruning",
-  role: "Senior Data Engineer",
+  role: "Senior Analytics Engineer",
   location: "Chicago, Illinois",
   email: "jimtbruning@gmail.com",
   github: "https://github.com/jabrunin001",
   linkedin: "https://www.linkedin.com/in/jtb96/",
-  headline: "Infrastructure for modern data teams.",
-  sub: "I'm a Senior Data Engineer. I turn legacy data systems into platforms teams can run themselves, usually with Airflow, Spark, Snowflake, and dbt.",
+  headline: "Trusted data for modern teams.",
+  sub: "I'm a Senior Analytics Engineer. I turn raw, messy source data into clean, tested datasets that teams can trust and decide on, usually with dbt, Snowflake, Spark, and Airflow.",
 };
 
 export const stack = [
@@ -43,6 +43,16 @@ export const valueProps = [
 ];
 
 export const projects = [
+  {
+    name: "ad-lakehouse",
+    blurb:
+      "An ad-serving event lakehouse. Synthetic ad events stream through Kafka and Spark Structured Streaming into Apache Iceberg, model up to campaign pacing and inventory fill in Trino, and run on Airflow. A GDPR right-to-be-forgotten delete rewrites about 15x less data by bucketing on user_id.",
+    stack: ["Kafka", "Spark", "Iceberg", "Trino", "Airflow"],
+    links: [
+      { label: "GitHub", url: "https://github.com/jabrunin001/ad-lakehouse", icon: "github" },
+      { label: "Business value", url: "https://github.com/jabrunin001/ad-lakehouse/blob/main/docs/business-value.md", icon: "external" },
+    ],
+  },
   {
     name: "iceberg-lakehouse-lab",
     blurb:
