@@ -2,12 +2,14 @@
 import { experience, education } from "../data/content";
 ---
 <section id="experience">
-  <div class="container reveal">
-    <p class="eyebrow">Experience</p>
-    <h2 class="section-title">Six years modernizing institutional data.</h2>
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">Experience</p>
+      <h2 class="section-title">Six years modernizing institutional data.</h2>
+    </div>
     <div class="rows">
-      {experience.map((job) => (
-        <article class="row">
+      {experience.map((job, i) => (
+        <article class="row reveal" style={`--rd:${i * 90}ms`}>
           <div class="meta">
             <h3>{job.role}</h3>
             <p class="org">{job.org}</p>
@@ -16,7 +18,7 @@ import { experience, education } from "../data/content";
           <ul>{job.bullets.map((b) => <li>{b}</li>)}</ul>
         </article>
       ))}
-      <article class="row">
+      <article class="row reveal" style={`--rd:${experience.length * 90}ms`}>
         <div class="meta"><h3>Education</h3></div>
         <ul class="edu">
           {education.map((e) => <li><strong>{e.degree}</strong> — {e.org} <span class="tnum">({e.period})</span></li>)}

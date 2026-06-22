@@ -45,43 +45,64 @@ export const valueProps = [
 export const projects = [
   {
     name: "ad-lakehouse",
+    tagline: "Streaming ad-event lakehouse",
+    motif: "stream",
     blurb:
       "An ad-serving event lakehouse. Synthetic ad events stream through Kafka and Spark Structured Streaming into Apache Iceberg, model up to campaign pacing and inventory fill in Trino, and run on Airflow. A GDPR right-to-be-forgotten delete rewrites about 15x less data by bucketing on user_id.",
     stack: ["Kafka", "Spark", "Iceberg", "Trino", "Airflow"],
     links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/ad-lakehouse/", icon: "demo" },
       { label: "GitHub", url: "https://github.com/jabrunin001/ad-lakehouse", icon: "github" },
       { label: "Business value", url: "https://github.com/jabrunin001/ad-lakehouse/blob/main/docs/business-value.md", icon: "external" },
     ],
   },
   {
     name: "iceberg-lakehouse-lab",
+    tagline: "Apache Iceberg, end to end",
+    motif: "layers",
     blurb:
       "A local Apache Iceberg lakehouse. MovieLens and synthetic events move through bronze, silver, and gold with dbt-spark, get checked by dbt tests and Great Expectations, and are queried with Trino.",
     stack: ["Iceberg", "Spark", "dbt", "Trino", "MinIO"],
     links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/iceberg-lakehouse-lab/", icon: "demo" },
       { label: "GitHub", url: "https://github.com/jabrunin001/iceberg-lakehouse-lab", icon: "github" },
-      { label: "Live dashboard", url: "https://jabrunin001.github.io/iceberg-lakehouse-lab/", icon: "external" },
       { label: "Writeup", url: "https://github.com/jabrunin001/iceberg-lakehouse-lab/blob/main/docs/blog/why-table-format-matters.md", icon: "external" },
     ],
   },
   {
+    name: "certified-metrics-framework",
+    tagline: "A trust layer for metrics",
+    motif: "shield",
+    blurb:
+      "A metric is certified only when it is governed by one MetricFlow definition, fresh, and reconciled against an independently re-derived value — catching definition bugs that every schema test passes. Built on dbt + MetricFlow + DuckDB with a Python CLI and a CI job that proves the control works.",
+    stack: ["dbt", "MetricFlow", "DuckDB", "Python", "CI"],
+    links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/certified-metrics-framework/", icon: "demo" },
+      { label: "GitHub", url: "https://github.com/jabrunin001/certified-metrics-framework", icon: "github" },
+    ],
+  },
+  {
     name: "realtime-feature-pipeline",
+    tagline: "Real-time ML features, no skew",
+    motif: "pipeline",
     blurb:
       "Kafka viewing-events run through Spark Structured Streaming into Redis and Delta Lake, with point-in-time-correct training and a LightGBM model served over FastAPI with zero train/serve skew.",
     stack: ["Kafka", "Spark", "Redis", "Delta Lake", "FastAPI"],
     links: [
+      { label: "Live dashboard", url: "https://jabrunin001.github.io/realtime-feature-pipeline/", icon: "demo" },
       { label: "GitHub", url: "https://github.com/jabrunin001/realtime-feature-pipeline", icon: "github" },
-      { label: "Live dashboard", url: "https://jabrunin001.github.io/realtime-feature-pipeline/", icon: "external" },
     ],
   },
   {
     name: "llm-eval-pipeline",
+    tagline: "Analytics engineering for LLM evals",
+    motif: "chart",
     blurb:
       "Analytics engineering for LLM evals: MMLU scored against three Claude models, modeled in dbt (staging to marts, with Wilson confidence intervals), and served as a live dashboard.",
     stack: ["dbt", "DuckDB", "Anthropic API", "Streamlit"],
     links: [
+      { label: "Live dashboard", url: "https://jabrunin001.github.io/llm-eval-pipeline/", icon: "demo" },
       { label: "GitHub", url: "https://github.com/jabrunin001/llm-eval-pipeline", icon: "github" },
-      { label: "Live dashboard", url: "https://jabrunin001.github.io/llm-eval-pipeline/", icon: "external" },
     ],
   },
 ];

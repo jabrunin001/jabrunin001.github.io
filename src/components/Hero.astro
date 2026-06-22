@@ -1,23 +1,29 @@
 ---
 import { profile, terminalSnippet } from "../data/content";
+const words = profile.headline.split(" ");
 ---
 <section id="top" class="hero">
   <div class="hero-gradient" aria-hidden="true"></div>
+  <div class="blob" aria-hidden="true"></div>
   <div class="container hero-inner">
     <div class="hero-copy">
       <p class="eyebrow">{profile.role} · {profile.location}</p>
-      <h1>{profile.headline}</h1>
+      <h1>
+        {words.map((w, i) => (
+          <span class="hero-word" style={`animation-delay:${i * 90}ms`}>{w}&nbsp;</span>
+        ))}
+      </h1>
       <p class="lead hero-sub">{profile.sub}</p>
       <div class="cta">
-        <a class="btn btn-primary" href="#project">View work</a>
+        <a class="btn btn-primary" href="#projects">View work</a>
         <a class="btn btn-secondary" href="/resume.pdf" target="_blank" rel="noopener">Résumé</a>
       </div>
     </div>
     <div class="card term" role="img" aria-label="Terminal output: dbt test suite passing, 19 of 19 checks">
       <div class="term-bar"><span></span><span></span><span></span></div>
       <div class="term-body">
-        {terminalSnippet.map((l) => (
-          <div class:list={["line", { pass: l.includes("PASS") }]}>{l}</div>
+        {terminalSnippet.map((l, i) => (
+          <div class:list={["line", { pass: l.includes("PASS") }]} style={`animation-delay:${600 + i * 140}ms`}>{l}</div>
         ))}
       </div>
     </div>
@@ -25,31 +31,42 @@ import { profile, terminalSnippet } from "../data/content";
 </section>
 
 <style>
-  .hero { position: relative; padding: 7rem 0 5rem; overflow: hidden; }
+  .hero { position: relative; padding: 7.5rem 0 5.5rem; overflow: hidden; }
   .hero-gradient {
-    position: absolute; inset: 0 0 auto 0; height: 680px; z-index: 0;
+    position: absolute; inset: 0 0 auto 0; height: 720px; z-index: 0;
     background:
-      radial-gradient(45% 60% at 12% 8%, rgba(0,212,255,.45), transparent 60%),
-      radial-gradient(50% 70% at 48% -5%, rgba(99,91,255,.45), transparent 60%),
-      radial-gradient(45% 65% at 82% 12%, rgba(255,111,216,.40), transparent 60%),
-      radial-gradient(40% 60% at 98% 45%, rgba(255,153,102,.40), transparent 60%),
-      linear-gradient(120deg, rgba(0,212,255,.12), rgba(169,96,238,.12), rgba(255,111,216,.10));
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-    animation: drift 18s ease-in-out infinite alternate;
+      radial-gradient(45% 60% at 10% 6%, rgba(45,212,191,.45), transparent 60%),
+      radial-gradient(50% 70% at 46% -6%, rgba(13,148,136,.40), transparent 60%),
+      radial-gradient(45% 65% at 84% 10%, rgba(94,234,212,.42), transparent 60%),
+      radial-gradient(40% 60% at 99% 48%, rgba(20,184,166,.30), transparent 60%),
+      linear-gradient(120deg, rgba(45,212,191,.10), rgba(13,148,136,.10), rgba(94,234,212,.08));
+    clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%);
+    animation: drift 20s ease-in-out infinite alternate;
   }
-  @keyframes drift { to { transform: translateX(-30px) translateY(10px) scale(1.04); } }
+  .blob {
+    position: absolute; z-index: 0; right: -120px; top: 40px; width: 380px; height: 380px;
+    background: radial-gradient(circle at 30% 30%, rgba(13,148,136,.30), rgba(45,212,191,.08) 60%, transparent 72%);
+    border-radius: 48% 52% 58% 42% / 52% 44% 56% 48%;
+    filter: blur(8px); animation: floaty 9s ease-in-out infinite;
+  }
   .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
   .hero-copy h1 { font-size: clamp(2.6rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--navy); }
-  .hero-sub { margin-top: 1.4rem; }
-  .cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
-  .term { padding: 0; overflow: hidden; box-shadow: var(--shadow-lg); }
-  .term-bar { display: flex; gap: .4rem; padding: .8rem 1rem; border-bottom: 1px solid var(--border); background: #fbfcfe; }
-  .term-bar span { width: 11px; height: 11px; border-radius: 50%; background: #d7dde5; }
+  .hero-word { display: inline-block; opacity: 0; animation: wordUp .7s var(--ease) forwards; }
+  .hero-sub { margin-top: 1.4rem; opacity: 0; animation: wordUp .7s var(--ease) .55s forwards; }
+  .cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; opacity: 0; animation: wordUp .7s var(--ease) .7s forwards; }
+  .term { padding: 0; overflow: hidden; box-shadow: var(--shadow-lg); opacity: 0; transform: translateY(20px);
+    animation: wordUp .8s var(--ease) .5s forwards; }
+  .term-bar { display: flex; gap: .4rem; padding: .8rem 1rem; border-bottom: 1px solid var(--border); background: #f6fbfa; }
+  .term-bar span { width: 11px; height: 11px; border-radius: 50%; background: #cfe0dd; }
   .term-body { padding: 1.2rem 1.3rem; font-family: var(--font-mono); font-size: .82rem; line-height: 1.7; color: var(--slate); }
-  .term-body .line { white-space: pre; }
-  .term-body .pass { color: #15803d; font-weight: 500; }
+  .term-body .line { white-space: pre; opacity: 0; animation: lineIn .4s var(--ease) forwards; }
+  .term-body .pass { color: var(--accent-ink); font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-sub, .cta, .term { opacity: 1 !important; animation: none !important; transform: none !important; }
+  }
   @media (max-width: 880px) {
     .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
     .term { max-width: 460px; }
+    .blob { display: none; }
   }
 </style>

@@ -3,16 +3,20 @@ import { valueProps } from "../data/content";
 import Icon from "./Icon.astro";
 ---
 <section id="work">
-  <div class="container reveal">
-    <p class="eyebrow">What I build</p>
-    <h2 class="section-title">Three things I'm good at.</h2>
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">What I build</p>
+      <h2 class="section-title">Three things I'm good at.</h2>
+    </div>
     <div class="grid">
-      {valueProps.map((p) => (
-        <article class="vp">
-          <div class="ic"><Icon name={p.icon} size={22} /></div>
-          <h3>{p.title}</h3>
-          <p>{p.desc}</p>
-          <p class="metric tnum">{p.metric}</p>
+      {valueProps.map((p, i) => (
+        <article class="vp card card-hover reveal" style={`--rd:${i * 110}ms`}>
+          <div class="vp-in">
+            <div class="ic"><Icon name={p.icon} size={22} /></div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+            <p class="metric tnum">{p.metric}</p>
+          </div>
         </article>
       ))}
     </div>
@@ -21,11 +25,15 @@ import Icon from "./Icon.astro";
 
 <style>
   .section-title { margin-bottom: 3rem; max-width: 20ch; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  .vp .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
-    background: rgba(99,91,255,.1); color: var(--accent); margin-bottom: 1.2rem; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .vp { padding: 1.8rem; }
+  .vp-in { position: relative; z-index: 1; }
+  .vp .ic { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center;
+    background: var(--accent-soft); color: var(--accent-ink); margin-bottom: 1.2rem;
+    transition: transform .3s var(--ease); }
+  .vp.card-hover:hover .ic { transform: translateY(-3px) rotate(-4deg); }
   .vp h3 { color: var(--navy); font-size: 1.2rem; font-weight: 700; margin-bottom: .6rem; }
   .vp p { color: var(--slate); }
-  .vp .metric { margin-top: 1rem; font-weight: 700; color: var(--accent); }
-  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+  .vp .metric { margin-top: 1rem; font-weight: 700; color: var(--accent-ink); }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; gap: 1.2rem; } }
 </style>

@@ -5,6 +5,7 @@ import Icon from "./Icon.astro";
 <section id="contact" class="contact">
   <div class="contact-gradient" aria-hidden="true"></div>
   <div class="container reveal inner">
+    <p class="eyebrow" style="justify-content:center">Contact</p>
     <h2 class="section-title">Let's build something.</h2>
     <p class="lead">Open to Senior / Staff Data Engineering roles — remote, hybrid, or Chicago.</p>
     <div class="links">
@@ -19,10 +20,11 @@ import Icon from "./Icon.astro";
   .contact { position: relative; text-align: center; overflow: hidden; }
   .contact-gradient { position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(40% 70% at 25% 30%, rgba(99,91,255,.16), transparent 60%),
-      radial-gradient(40% 70% at 75% 60%, rgba(255,111,216,.14), transparent 60%);
+      radial-gradient(42% 70% at 25% 25%, rgba(13,148,136,.16), transparent 60%),
+      radial-gradient(42% 70% at 75% 65%, rgba(45,212,191,.16), transparent 60%);
   }
   .inner { position: relative; z-index: 1; }
+  .eyebrow { display: inline-flex; }
   .lead { margin: 1rem auto 0; }
   .links { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; margin-top: 2rem; }
 </style>
