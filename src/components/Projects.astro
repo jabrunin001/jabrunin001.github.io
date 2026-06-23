@@ -28,6 +28,14 @@ const motifs: Record<string, string> = {
     <rect x="122" y="34" width="18" height="48" rx="2" fill="currentColor" stroke="none" opacity=".72"/>
     <rect x="158" y="24" width="18" height="58" rx="2" fill="currentColor" stroke="none" opacity=".9"/>
     <path d="M50 54 L95 42 L131 32 L167 22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  console: `
+    <rect x="44" y="24" width="152" height="56" rx="4" opacity=".42"/>
+    <path d="M58 42 h32 M58 58 h50 M58 68 h28" stroke-width="2.5" opacity=".82"/>
+    <path d="M130 58 l12 -18 l12 26 l12 -16 l16 0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+  ledger: `
+    <path d="M64 22 h112 v60 H64 z" opacity=".38"/>
+    <path d="M88 22 v60 M64 42 h112 M64 62 h112" stroke-width="2.5" opacity=".62"/>
+    <path d="M102 52 h28 M102 72 h20 M146 52 h16 M146 72 h16" stroke-width="3" stroke-linecap="round"/>`,
 };
 
 const counts = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
@@ -77,6 +85,8 @@ const countWord = counts[projects.length] ?? String(projects.length);
     background: linear-gradient(135deg, #0d9488, #0ea5b7); }
   .thumb[data-motif="layers"]   { background: linear-gradient(135deg, #0f766e, #0d9488); }
   .thumb[data-motif="shield"]   { background: linear-gradient(135deg, #0d9488, #10b981); }
+  .thumb[data-motif="console"]  { background: linear-gradient(135deg, #0f766e, #2563eb); }
+  .thumb[data-motif="ledger"]   { background: linear-gradient(135deg, #0c302f, #0d9488); }
   .thumb[data-motif="pipeline"] { background: linear-gradient(135deg, #0e7490, #0d9488); }
   .thumb[data-motif="chart"]    { background: linear-gradient(135deg, #0f766e, #14b8a6); }
   .thumb::after { content: ""; position: absolute; inset: 0;

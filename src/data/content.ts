@@ -82,6 +82,30 @@ export const projects = [
     ],
   },
   {
+    name: "gtm-trusted-layer",
+    tagline: "Metric trust console for GTM data",
+    motif: "console",
+    blurb:
+      "A governed GTM metrics layer for usage-driven revenue. dbt and DuckDB certify eight business metrics only when they are documented, fresh, and reconciled against independent references, with a self-contained dashboard that shows the control catching a bad source definition.",
+    stack: ["dbt", "DuckDB", "Python", "CI", "Data Quality"],
+    links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/gtm-trusted-layer/", icon: "demo" },
+      { label: "GitHub", url: "https://github.com/jabrunin001/gtm-trusted-layer", icon: "github" },
+    ],
+  },
+  {
+    name: "subledger-as-code",
+    tagline: "Financial controls in dbt",
+    motif: "ledger",
+    blurb:
+      "A runnable BNPL loan subledger with double-entry posting rules, source-to-ledger reconciliation, and tamper-evident evidence packs. It proves why balanced journal entries are not enough by injecting a wrong-account posting bug that only the substantive control catches.",
+    stack: ["dbt", "DuckDB", "Python", "SOX Controls", "CI"],
+    links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/subledger-as-code/", icon: "demo" },
+      { label: "GitHub", url: "https://github.com/jabrunin001/subledger-as-code", icon: "github" },
+    ],
+  },
+  {
     name: "realtime-feature-pipeline",
     tagline: "Real-time ML features, no skew",
     motif: "pipeline",
