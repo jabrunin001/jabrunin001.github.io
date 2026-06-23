@@ -44,6 +44,19 @@ export const valueProps = [
 
 export const projects = [
   {
+    name: "ad-truth-layer",
+    tagline: "A parity gate for the BI layer",
+    motif: "parity",
+    blurb:
+      "An ads-performance analytics layer where the certified dbt model is the source of truth and the Looker measures must agree with it. A parity gate parses the real LookML, re-derives each measure in SQL, and catches a ROAS drift — gross revenue instead of net of refunds — that every dbt schema test still passes. Built on dbt + DuckDB + LookML with a Python CLI and a CI job that proves the control.",
+    stack: ["dbt", "DuckDB", "LookML", "Python", "CI"],
+    links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/ad-truth-layer/", icon: "demo" },
+      { label: "GitHub", url: "https://github.com/jabrunin001/ad-truth-layer", icon: "github" },
+      { label: "Business value", url: "https://github.com/jabrunin001/ad-truth-layer/blob/main/docs/business-value.md", icon: "external" },
+    ],
+  },
+  {
     name: "ad-lakehouse",
     tagline: "Streaming ad-event lakehouse",
     motif: "stream",
