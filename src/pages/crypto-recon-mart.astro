@@ -1,0 +1,556 @@
+---
+import Layout from "../layouts/Layout.astro";
+import snap from "../data/recon-snapshot.json";
+
+const repo = "https://github.com/jabrunin001/crypto-recon-mart";
+const bizDoc = repo + "/blob/main/docs/business-value.md";
+
+const k = snap.kpis;
+const matchPct = (k.match_rate * 100).toFixed(1);
+
+function usd(n: number): string {
+  if (n >= 1e6) return "$" + (n / 1e6).toFixed(2) + "M";
+  if (n >= 1e3) return "$" + (n / 1e3).toFixed(0) + "K";
+  return "$" + Math.round(n).toString();
+}
+const fullUsd = (n: number) => "$" + Math.round(n).toLocaleString("en-US");
+
+const stack = ["dbt", "DuckDB", "MetricFlow", "Airflow", "Anthropic API", "Snowflake-ready"];
+
+const byType = snap.breaks_by_type as { break_type: string; count: number; usd_at_risk: number }[];
+const maxTypeUsd = Math.max(...byType.map((d) => d.usd_at_risk));
+
+const sev = snap.severity as { severity: string; count: number; usd: number }[];
+const totalSevUsd = sev.reduce((a, s) => a + s.usd, 0);
+const highSev = sev.find((s) => s.severity === "HIGH");
+const highPct = highSev ? Math.round((highSev.usd / totalSevUsd) * 100) : 0;
+
+const assets = snap.match_rate_by_asset as { symbol: string; match_rate: number; matched: number; total: number }[];
+
+const ev = snap.eval as { accuracy: number; n: number; per_class: Record<string, unknown> };
+const evalPct = Math.round(ev.accuracy * 100);
+const evalClasses = Object.keys(ev.per_class).length;
+
+const triage = snap.triage_sample as {
+  break_type: string; symbol: string; usd_at_risk: number; severity: string;
+  category: string; likely_root_cause: string; suggested_action: string;
+  confidence: number; requires_human: boolean; engine: string;
+}[];
+
+const sevColor: Record<string, string> = { HIGH: "#fb7185", MEDIUM: "#fbbf24", LOW: "#94a3b8" };
+
+const kpis = [
+  { label: "Match rate", value: matchPct + "%", note: "ledger ⟷ on-chain", bar: Number(matchPct) },
+  { label: "Value at risk", value: usd(k.usd_at_risk), note: fullUsd(k.usd_at_risk) + " across open breaks" },
+  { label: "Open breaks", value: String(k.open_breaks), note: "of " + k.total_breaks + " detected" },
+  { label: "High severity", value: String(k.high_severity), note: highPct + "% of exposure" },
+  { label: "Triage eval", value: evalPct + "%", note: "n=" + ev.n + " · all " + evalClasses + " types" },
+];
+
+const pipeline = [
+  { n: "1", t: "Generate", d: "Python OOP sim emits a labeled off-chain ledger + on-chain txs" },
+  { n: "2", t: "Land", d: "raw tables in DuckDB (Snowflake-ready)" },
+  { n: "3", t: "Model", d: "dbt staging → match engine → star-schema marts" },
+  { n: "4", t: "Measure", d: "MetricFlow metrics + reconciliation invariant tests" },
+  { n: "5", t: "Triage", d: "rules + Claude classify breaks, advisory only" },
+];
+---
+
+<Layout
+  title="Crypto Reconciliation Mart — live dashboard"
+  description="Off-chain ledger reconciled against on-chain settlement. A dbt + DuckDB mart that surfaces, ages, prices, and triages the breaks."
+  themeColor="#0b1220"
+>
+  <div class="app">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="tb-in">
+        <a class="back" href="/#projects" aria-label="Back to portfolio">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          Portfolio
+        </a>
+        <span class="wordmark mono">crypto-recon-mart</span>
+        <div class="tb-right">
+          <span class="status" role="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="mono">{matchPct}%</span> matched
+            <span class="sep">·</span>
+            <span class="mono">{k.total_breaks}</span> breaks
+          </span>
+          <a class="ghlink" href={repo} target="_blank" rel="noopener" aria-label="View source on GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Reconciliation mart · live demo</p>
+          <h1>On-chain settlement,<br /><span class="grad">reconciled.</span></h1>
+          <p class="lede">
+            An off-chain double-entry ledger reconciled against on-chain settlement — where the
+            <strong>breaks are the product</strong>. dbt models a star schema over DuckDB that
+            classifies, ages, and prices every break, and an LLM triages the unresolved ones —
+            advisory only, graded against ground-truth labels.
+          </p>
+          <div class="chips">{stack.map((s) => <span class="chip">{s}</span>)}</div>
+          <div class="cta">
+            <a class="btn primary" href={repo} target="_blank" rel="noopener">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+              View on GitHub
+            </a>
+            <a class="btn ghost" href={bizDoc} target="_blank" rel="noopener">Business value</a>
+          </div>
+        </div>
+
+        <!-- Reconciliation schematic -->
+        <div class="hero-vis" aria-hidden="true">
+          <svg viewBox="0 0 320 300" fill="none" role="img">
+            <defs>
+              <linearGradient id="lane" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#14b8a6" stop-opacity=".25"/>
+                <stop offset="1" stop-color="#14b8a6" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <text x="56" y="30" class="vis-lbl" text-anchor="middle">OFF-CHAIN LEDGER</text>
+            <text x="264" y="30" class="vis-lbl" text-anchor="middle">ON-CHAIN</text>
+            <rect x="22" y="44" width="68" height="232" rx="10" fill="url(#lane)" stroke="#1d3b3a"/>
+            <rect x="230" y="44" width="68" height="232" rx="10" fill="url(#lane)" stroke="#1d3b3a"/>
+            {[0,1,2,3,4,5].map((i) => {
+              const y = 70 + i * 34;
+              const broken = i === 1 || i === 4;
+              const orphan = i === 5;
+              const col = broken ? "#fb7185" : orphan ? "#fbbf24" : "#2dd4bf";
+              return (
+                <g>
+                  <circle cx="56" cy={y} r="6" fill={orphan ? "#0b1220" : col} stroke={col} stroke-width="2"/>
+                  <circle cx="264" cy={y} r="6" fill={broken ? "#0b1220" : col} stroke={col} stroke-width="2"/>
+                  <path d={`M62 ${y} H258`} stroke={col} stroke-width="2"
+                        stroke-dasharray={broken || orphan ? "5 5" : "0"}
+                        opacity={broken || orphan ? ".7" : ".85"}
+                        class={broken || orphan ? "" : "flow"} style={`--d:${i * 0.5}s`}/>
+                </g>
+              );
+            })}
+          </svg>
+          <div class="vis-legend mono">
+            <span><i class="sw" style="background:#2dd4bf"></i>matched</span>
+            <span><i class="sw" style="background:#fb7185"></i>break</span>
+            <span><i class="sw" style="background:#fbbf24"></i>orphan</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI band -->
+    <section class="band wrap">
+      <div class="kpis">
+        {kpis.map((kpi) => (
+          <article class="kpi">
+            <p class="kpi-label">{kpi.label}</p>
+            <p class="kpi-value mono">{kpi.value}</p>
+            {kpi.bar !== undefined && (
+              <div class="kpi-bar" aria-hidden="true"><span style={`width:${kpi.bar}%`}></span></div>
+            )}
+            <p class="kpi-note">{kpi.note}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Analytics -->
+    <section class="wrap analytics">
+      <!-- Breaks by type -->
+      <article class="panel span2">
+        <header class="p-head">
+          <h2>Breaks by type</h2>
+          <span class="p-sub mono">value at risk</span>
+        </header>
+        <ul class="bars">
+          {byType.map((d) => (
+            <li class="bar-row">
+              <span class="bar-name mono">{d.break_type}</span>
+              <div class="bar-track" title={`${d.count} breaks · ${fullUsd(d.usd_at_risk)}`}>
+                <span class="bar-fill" style={`width:${Math.max(6, (d.usd_at_risk / maxTypeUsd) * 100)}%`}></span>
+              </div>
+              <span class="bar-val mono">{usd(d.usd_at_risk)}</span>
+              <span class="bar-cnt mono">{d.count}×</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <!-- Severity concentration -->
+      <article class="panel">
+        <header class="p-head">
+          <h2>Exposure by severity</h2>
+        </header>
+        <p class="sev-call">
+          <span class="mono big">{highPct}%</span> of value at risk sits in
+          <strong> {highSev?.count} HIGH-severity</strong> breaks.
+        </p>
+        <ul class="sevlist">
+          {sev.map((s) => (
+            <li>
+              <span class="sev-badge" style={`--c:${sevColor[s.severity]}`}>{s.severity}</span>
+              <div class="bar-track">
+                <span class="bar-fill" style={`width:${Math.max(3,(s.usd/totalSevUsd)*100)}%; background:${sevColor[s.severity]}`}></span>
+              </div>
+              <span class="bar-val mono">{usd(s.usd)}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <!-- Match rate by asset -->
+      <article class="panel">
+        <header class="p-head">
+          <h2>Match rate by asset</h2>
+          <span class="p-sub mono">target 100%</span>
+        </header>
+        <ul class="assets">
+          {assets.map((a) => {
+            const pct = (a.match_rate * 100).toFixed(1);
+            return (
+              <li>
+                <span class="ast-sym mono">{a.symbol}</span>
+                <div class="bullet" title={`${a.matched}/${a.total} matched`}>
+                  <span class="bullet-fill" style={`width:${pct}%`}></span>
+                  <span class="bullet-target" aria-hidden="true"></span>
+                </div>
+                <span class="ast-pct mono">{pct}%</span>
+              </li>
+            );
+          })}
+        </ul>
+      </article>
+
+      <!-- Top breaks table -->
+      <article class="panel span2">
+        <header class="p-head">
+          <h2>Top breaks by value at risk</h2>
+          <span class="p-sub mono">fct_break</span>
+        </header>
+        <div class="tbl-scroll">
+          <table class="tbl">
+            <thead>
+              <tr><th>Type</th><th>Asset</th><th class="r">Value at risk</th><th>Severity</th><th class="r">Aged (h)</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              {snap.top_breaks.map((b: any) => (
+                <tr>
+                  <td class="mono">{b.break_type}</td>
+                  <td class="mono">{b.symbol}</td>
+                  <td class="r mono">{fullUsd(b.usd_at_risk)}</td>
+                  <td><span class="sev-badge sm" style={`--c:${sevColor[b.severity]}`}>{b.severity}</span></td>
+                  <td class="r mono dim">{b.aged_hours}</td>
+                  <td><span class={`pill ${b.is_resolved ? "ok" : "open"}`}>{b.is_resolved ? "resolved" : "open"}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <!-- LLM triage -->
+    <section class="wrap triage-sec">
+      <div class="sec-head">
+        <p class="eyebrow">AI break triage</p>
+        <h2 class="big-title">Advisory, and eval-graded.</h2>
+        <p class="lede">
+          Each unresolved break is classified with a root-cause guess, a suggested action, and a
+          calibrated confidence. The model is <strong>advisory only</strong> — it never posts to the
+          ledger or the marts. A deterministic rules baseline runs alongside Claude and is graded
+          against the generator's ground-truth labels:
+          <span class="hl mono"> {evalPct}% accuracy</span> across all {evalClasses} break types (n={ev.n}).
+          With no API key it falls back to rules; set <span class="mono">ANTHROPIC_API_KEY</span> to route through Claude.
+        </p>
+      </div>
+      <div class="triage-grid">
+        {triage.map((t) => (
+          <article class="tcard">
+            <div class="tcard-top">
+              <span class="t-type mono">{t.break_type}</span>
+              <span class="t-asset mono">{t.symbol} · {usd(t.usd_at_risk)}</span>
+            </div>
+            <p class="t-cause">{t.likely_root_cause}</p>
+            <p class="t-action"><span class="t-k">action</span> {t.suggested_action}</p>
+            <div class="t-foot">
+              <div class="conf" title={`confidence ${(t.confidence*100).toFixed(0)}%`}>
+                <span class="conf-bar"><span style={`width:${t.confidence*100}%`}></span></span>
+                <span class="mono dim">{(t.confidence*100).toFixed(0)}%</span>
+              </div>
+              <span class={`t-flag ${t.requires_human ? "human" : "auto"}`}>
+                {t.requires_human ? "needs human" : "auto-clearable"}
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Pipeline -->
+    <section class="wrap pipe-sec">
+      <div class="sec-head">
+        <p class="eyebrow">How it works</p>
+        <h2 class="big-title">From synthetic events to graded breaks.</h2>
+      </div>
+      <ol class="pipe">
+        {pipeline.map((p) => (
+          <li class="pstep">
+            <span class="pnum mono">{p.n}</span>
+            <h3>{p.t}</h3>
+            <p>{p.d}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="pstats mono">
+        <span><b>{snap.pipeline.dbt_models}</b> dbt models</span>
+        <span><b>{snap.pipeline.dbt_tests}</b> tests</span>
+        <span><b>{snap.pipeline.break_types}</b> break types</span>
+        <span><b>{k.ledger_entries}</b> ledger entries</span>
+        <span><b>{k.onchain_txs}</b> on-chain txs</span>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="foot">
+      <div class="wrap foot-in">
+        <p class="foot-note">
+          Numbers on this page are a live snapshot of the dbt mart (deterministic seed) — not hand-written.
+          Built with dbt, DuckDB, MetricFlow, Airflow, and the Anthropic API.
+        </p>
+        <div class="foot-links">
+          <a href={repo} target="_blank" rel="noopener">GitHub</a>
+          <a href={bizDoc} target="_blank" rel="noopener">Business value</a>
+          <a href="/#projects">← Portfolio</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</Layout>
+
+<style is:global>
+  body { background: #0b1220; }
+  ::selection { background: rgba(45,212,191,.28); }
+</style>
+
+<style>
+  .app {
+    --bg: #0b1220;
+    --surface: #0f1a2b;
+    --surface-2: #121f33;
+    --line: #1d2c44;
+    --line-soft: #16233a;
+    --ink: #eef4f8;
+    --ink-2: #aebccd;
+    --ink-3: #6f8197;
+    --teal: #2dd4bf;
+    --teal-deep: #0d9488;
+    --teal-glow: rgba(45,212,191,.18);
+    color: var(--ink-2);
+    font-family: var(--font-sans);
+    background:
+      radial-gradient(900px 480px at 78% -8%, rgba(13,148,136,.16), transparent 60%),
+      radial-gradient(700px 420px at 8% 4%, rgba(56,189,248,.08), transparent 55%),
+      var(--bg);
+    min-height: 100dvh;
+    line-height: 1.6;
+  }
+  .app .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ---- top bar ---- */
+  .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(12px);
+    background: rgba(11,18,32,.72); border-bottom: 1px solid var(--line-soft); }
+  .tb-in { max-width: 1120px; margin: 0 auto; padding: .7rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+  .back { display: inline-flex; align-items: center; gap: .35rem; color: var(--ink-2);
+    font-size: .86rem; font-weight: 500; transition: color .2s var(--ease); }
+  .back:hover { color: var(--teal); }
+  .wordmark { color: var(--ink); font-weight: 600; font-size: .92rem; }
+  .tb-right { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+  .status { display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; color: var(--ink-2);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .32rem .7rem; }
+  .status .mono { color: var(--ink); font-weight: 600; }
+  .status .sep { color: var(--ink-3); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal);
+    box-shadow: 0 0 0 0 var(--teal-glow); animation: pulse 2.4s var(--ease) infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(45,212,191,.5);} 70%{ box-shadow:0 0 0 7px rgba(45,212,191,0);} 100%{box-shadow:0 0 0 0 rgba(45,212,191,0);} }
+  .ghlink { color: var(--ink-2); display: inline-flex; transition: color .2s var(--ease); }
+  .ghlink:hover { color: var(--teal); }
+
+  /* ---- shared ---- */
+  .eyebrow { display: inline-flex; align-items: center; gap: .55rem; font-size: .78rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .eyebrow::before { content: ""; width: 22px; height: 2px; border-radius: 2px; background: var(--teal); }
+  .lede { font-size: 1.06rem; color: var(--ink-2); max-width: 60ch; }
+  .lede strong, .lede .hl { color: var(--ink); font-weight: 600; }
+  .hl { color: var(--teal); }
+  .big-title { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 700; letter-spacing: -.02em;
+    color: var(--ink); line-height: 1.15; margin-bottom: .9rem; }
+
+  /* ---- hero ---- */
+  .hero { padding: 4rem 0 2.5rem; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; }
+  .hero-copy h1 { font-size: clamp(2.3rem, 5.4vw, 3.5rem); font-weight: 800; letter-spacing: -.03em;
+    line-height: 1.05; color: var(--ink); margin-bottom: 1.2rem; }
+  .grad { background: linear-gradient(96deg, #5eead4, #2dd4bf 40%, #38bdf8); -webkit-background-clip: text;
+    background-clip: text; color: transparent; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0; }
+  .chip { font-size: .76rem; font-weight: 600; font-family: var(--font-mono); color: var(--ink-2);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .3rem .7rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .72rem 1.3rem; border-radius: 999px;
+    font-size: .92rem; font-weight: 600; transition: transform .2s var(--ease), box-shadow .25s var(--ease), background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease); }
+  .btn.primary { background: var(--teal); color: #06231f; box-shadow: 0 8px 22px rgba(45,212,191,.22); }
+  .btn.primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(45,212,191,.34); background: #5eead4; }
+  .btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+  .btn.ghost:hover { transform: translateY(-2px); border-color: var(--teal); color: var(--teal); }
+
+  .hero-vis { position: relative; }
+  .hero-vis svg { width: 100%; height: auto; }
+  .vis-lbl { fill: var(--ink-3); font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; }
+  .flow { stroke-dasharray: 4 200; animation: flow 3.4s linear infinite; animation-delay: var(--d); }
+  @keyframes flow { to { stroke-dashoffset: -204; } }
+  .vis-legend { display: flex; justify-content: center; gap: 1.1rem; margin-top: .6rem; font-size: .72rem; color: var(--ink-3); }
+  .vis-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+  .sw { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+  /* ---- kpi band ---- */
+  .band { margin-top: 1rem; }
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+  .kpi { background: linear-gradient(180deg, var(--surface), var(--surface-2)); border: 1px solid var(--line);
+    border-radius: 14px; padding: 1.1rem 1.15rem; transition: border-color .25s var(--ease), transform .25s var(--ease); }
+  .kpi:hover { border-color: #294263; transform: translateY(-3px); }
+  .kpi-label { font-size: .74rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+  .kpi-value { font-size: clamp(1.5rem, 2.4vw, 1.95rem); font-weight: 700; color: var(--ink); margin: .35rem 0 .1rem; }
+  .kpi-bar { height: 4px; background: var(--line); border-radius: 3px; overflow: hidden; margin: .5rem 0 .55rem; }
+  .kpi-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--teal-deep), var(--teal)); border-radius: 3px; }
+  .kpi-note { font-size: .78rem; color: var(--ink-3); }
+
+  /* ---- analytics grid ---- */
+  .analytics { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1.4rem 1.5rem; }
+  .panel.span2 { grid-column: span 2; }
+  .p-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.2rem; gap: 1rem; }
+  .p-head h2 { font-size: 1rem; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+  .p-sub { font-size: .74rem; color: var(--ink-3); }
+
+  .bars { list-style: none; display: flex; flex-direction: column; gap: .9rem; }
+  .bar-row { display: grid; grid-template-columns: 130px 1fr auto auto; align-items: center; gap: .8rem; }
+  .bar-name { font-size: .78rem; color: var(--ink-2); }
+  .bar-track { height: 9px; background: var(--line-soft); border-radius: 6px; overflow: hidden; }
+  .bar-fill { display: block; height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, var(--teal-deep), var(--teal)); transition: width .9s var(--ease); }
+  .bar-val { font-size: .82rem; color: var(--ink); font-weight: 600; min-width: 52px; text-align: right; }
+  .bar-cnt { font-size: .74rem; color: var(--ink-3); min-width: 30px; text-align: right; }
+
+  .sev-call { font-size: .92rem; color: var(--ink-2); margin-bottom: 1.1rem; line-height: 1.5; }
+  .sev-call .big { font-size: 1.5rem; font-weight: 700; color: #fb7185; }
+  .sev-call strong { color: var(--ink); }
+  .sevlist { list-style: none; display: flex; flex-direction: column; gap: .85rem; }
+  .sevlist li { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: .7rem; }
+  .sev-badge { font-family: var(--font-mono); font-size: .68rem; font-weight: 700; letter-spacing: .04em;
+    color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    background: color-mix(in srgb, var(--c) 13%, transparent); border-radius: 6px; padding: .2rem .45rem; text-align: center; }
+  .sev-badge.sm { font-size: .64rem; padding: .15rem .4rem; }
+
+  .assets { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .assets li { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: .7rem; }
+  .ast-sym { font-size: .82rem; color: var(--ink); font-weight: 600; }
+  .bullet { position: relative; height: 10px; background: var(--line-soft); border-radius: 6px; overflow: hidden; }
+  .bullet-fill { display: block; height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, var(--teal-deep), var(--teal)); transition: width .9s var(--ease); }
+  .bullet-target { position: absolute; top: -2px; bottom: -2px; right: 0; width: 2px; background: var(--ink-3); }
+  .ast-pct { font-size: .82rem; color: var(--ink); font-weight: 600; min-width: 50px; text-align: right; }
+
+  /* ---- table ---- */
+  .tbl-scroll { overflow-x: auto; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: .86rem; }
+  .tbl th { text-align: left; font-size: .7rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--ink-3); padding: 0 .9rem .7rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tbl th.r, .tbl td.r { text-align: right; }
+  .tbl td { padding: .68rem .9rem; border-bottom: 1px solid var(--line-soft); color: var(--ink-2); white-space: nowrap; }
+  .tbl tbody tr { transition: background .15s var(--ease); }
+  .tbl tbody tr:hover { background: rgba(45,212,191,.05); }
+  .tbl td.dim { color: var(--ink-3); }
+  .pill { font-family: var(--font-mono); font-size: .68rem; font-weight: 600; padding: .15rem .5rem; border-radius: 999px; }
+  .pill.open { color: #fbbf24; background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.3); }
+  .pill.ok { color: var(--teal); background: rgba(45,212,191,.12); border: 1px solid rgba(45,212,191,.3); }
+
+  /* ---- triage ---- */
+  .triage-sec { margin-top: 4.5rem; }
+  .sec-head { max-width: 70ch; margin-bottom: 2rem; }
+  .triage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .tcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem;
+    display: flex; flex-direction: column; gap: .7rem; transition: border-color .25s var(--ease), transform .25s var(--ease); }
+  .tcard:hover { border-color: #294263; transform: translateY(-3px); }
+  .tcard-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+  .t-type { font-size: .76rem; font-weight: 700; color: var(--teal); }
+  .t-asset { font-size: .74rem; color: var(--ink-3); }
+  .t-cause { font-size: .9rem; color: var(--ink); line-height: 1.45; }
+  .t-action { font-size: .84rem; color: var(--ink-2); line-height: 1.45; }
+  .t-k { font-family: var(--font-mono); font-size: .68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; margin-right: .35rem; }
+  .t-foot { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-top: auto; padding-top: .5rem; }
+  .conf { display: flex; align-items: center; gap: .45rem; }
+  .conf-bar { width: 64px; height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .conf-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--teal-deep), var(--teal)); }
+  .t-flag { font-family: var(--font-mono); font-size: .66rem; font-weight: 600; padding: .2rem .5rem; border-radius: 6px; }
+  .t-flag.human { color: #fbbf24; background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.3); }
+  .t-flag.auto { color: var(--teal); background: rgba(45,212,191,.1); border: 1px solid rgba(45,212,191,.28); }
+  .dim { color: var(--ink-3); }
+
+  /* ---- pipeline ---- */
+  .pipe-sec { margin-top: 4.5rem; }
+  .pipe { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; counter-reset: s; }
+  .pstep { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem; }
+  .pstep::after { content: ""; position: absolute; top: 50%; right: -.6rem; width: .6rem; height: 1px; background: var(--line); }
+  .pstep:last-child::after { display: none; }
+  .pnum { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px;
+    border-radius: 8px; background: var(--teal-glow); color: var(--teal); font-size: .8rem; font-weight: 700; margin-bottom: .7rem; }
+  .pstep h3 { font-size: .92rem; color: var(--ink); font-weight: 600; margin-bottom: .3rem; }
+  .pstep p { font-size: .8rem; color: var(--ink-3); line-height: 1.45; }
+  .pstats { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.6rem; padding-top: 1.4rem;
+    border-top: 1px solid var(--line-soft); font-size: .82rem; color: var(--ink-3); }
+  .pstats b { color: var(--ink); font-weight: 700; }
+
+  /* ---- footer ---- */
+  .foot { margin-top: 4.5rem; border-top: 1px solid var(--line-soft); padding: 2.2rem 0 3rem; }
+  .foot-in { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  .foot-note { font-size: .82rem; color: var(--ink-3); max-width: 62ch; }
+  .foot-links { display: flex; gap: 1.3rem; }
+  .foot-links a { font-size: .86rem; color: var(--ink-2); transition: color .2s var(--ease); }
+  .foot-links a:hover { color: var(--teal); }
+
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 6px; }
+
+  /* ---- responsive ---- */
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-vis { max-width: 360px; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .analytics { grid-template-columns: 1fr; }
+    .panel.span2 { grid-column: span 1; }
+    .triage-grid { grid-template-columns: repeat(2, 1fr); }
+    .pipe { grid-template-columns: 1fr 1fr; }
+    .pstep::after { display: none; }
+  }
+  @media (max-width: 600px) {
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .triage-grid { grid-template-columns: 1fr; }
+    .pipe { grid-template-columns: 1fr; }
+    .bar-row { grid-template-columns: 96px 1fr auto auto; gap: .5rem; }
+    .tb-in .wordmark { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot { animation: none; }
+    .flow { animation: none; stroke-dasharray: 0; }
+    .bar-fill, .bullet-fill, .conf-bar span, .kpi-bar span { transition: none; }
+    .kpi, .tcard, .btn { transition: none; }
+  }
+</style>

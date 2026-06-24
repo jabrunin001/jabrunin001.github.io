@@ -1,0 +1,262 @@
+{
+  "note": "Live snapshot of the local DuckDB run (deterministic seed). Numbers are produced by the dbt mart, not hand-written.",
+  "kpis": {
+    "match_rate": 0.7143,
+    "total_breaks": 72,
+    "usd_at_risk": 2217348.04,
+    "open_breaks": 67,
+    "mean_aged_hours": 448.0,
+    "assets": 4,
+    "ledger_entries": 168,
+    "onchain_txs": 180,
+    "high_severity": 19
+  },
+  "severity": [
+    {
+      "severity": "HIGH",
+      "count": 19,
+      "usd": 2112198.76
+    },
+    {
+      "severity": "MEDIUM",
+      "count": 16,
+      "usd": 97387.47
+    },
+    {
+      "severity": "LOW",
+      "count": 37,
+      "usd": 7761.81
+    }
+  ],
+  "breaks_by_type": [
+    {
+      "break_type": "TIMING_LAG",
+      "count": 12,
+      "usd_at_risk": 640072.57
+    },
+    {
+      "break_type": "MISSING_ONCHAIN",
+      "count": 12,
+      "usd_at_risk": 508256.09
+    },
+    {
+      "break_type": "AMOUNT_MISMATCH",
+      "count": 12,
+      "usd_at_risk": 443120.06
+    },
+    {
+      "break_type": "ORPHAN_ONCHAIN",
+      "count": 24,
+      "usd_at_risk": 363404.71
+    },
+    {
+      "break_type": "DUPLICATE",
+      "count": 12,
+      "usd_at_risk": 262494.61
+    }
+  ],
+  "aging_buckets": [
+    {
+      "bucket": "72h+",
+      "count": 67
+    }
+  ],
+  "match_rate_by_asset": [
+    {
+      "symbol": "BTC",
+      "match_rate": 0.7045,
+      "matched": 31,
+      "total": 44
+    },
+    {
+      "symbol": "ETH",
+      "match_rate": 0.7143,
+      "matched": 30,
+      "total": 42
+    },
+    {
+      "symbol": "SOL",
+      "match_rate": 0.6829,
+      "matched": 28,
+      "total": 41
+    },
+    {
+      "symbol": "USDC",
+      "match_rate": 0.7561,
+      "matched": 31,
+      "total": 41
+    }
+  ],
+  "top_breaks": [
+    {
+      "break_type": "AMOUNT_MISMATCH",
+      "symbol": "BTC",
+      "usd_at_risk": 308668.74,
+      "severity": "HIGH",
+      "aged_hours": 403.3,
+      "is_resolved": false
+    },
+    {
+      "break_type": "TIMING_LAG",
+      "symbol": "BTC",
+      "usd_at_risk": 279639.42,
+      "severity": "HIGH",
+      "aged_hours": 333.4,
+      "is_resolved": false
+    },
+    {
+      "break_type": "MISSING_ONCHAIN",
+      "symbol": "BTC",
+      "usd_at_risk": 176287.1,
+      "severity": "HIGH",
+      "aged_hours": 368.3,
+      "is_resolved": false
+    },
+    {
+      "break_type": "TIMING_LAG",
+      "symbol": "BTC",
+      "usd_at_risk": 167966.91,
+      "severity": "HIGH",
+      "aged_hours": 556.2,
+      "is_resolved": false
+    },
+    {
+      "break_type": "MISSING_ONCHAIN",
+      "symbol": "BTC",
+      "usd_at_risk": 161141.76,
+      "severity": "HIGH",
+      "aged_hours": -209.7,
+      "is_resolved": true
+    },
+    {
+      "break_type": "TIMING_LAG",
+      "symbol": "BTC",
+      "usd_at_risk": 161027.71,
+      "severity": "HIGH",
+      "aged_hours": 362.7,
+      "is_resolved": false
+    },
+    {
+      "break_type": "DUPLICATE",
+      "symbol": "BTC",
+      "usd_at_risk": 145448.13,
+      "severity": "HIGH",
+      "aged_hours": 362.4,
+      "is_resolved": false
+    },
+    {
+      "break_type": "ORPHAN_ONCHAIN",
+      "symbol": "BTC",
+      "usd_at_risk": 145448.13,
+      "severity": "HIGH",
+      "aged_hours": 361.3,
+      "is_resolved": false
+    }
+  ],
+  "triage_sample": [
+    {
+      "break_type": "AMOUNT_MISMATCH",
+      "symbol": "BTC",
+      "usd_at_risk": 308668.74,
+      "severity": "HIGH",
+      "category": "AMOUNT_MISMATCH",
+      "likely_root_cause": "on-chain fee or rounding not booked off-chain",
+      "suggested_action": "book the fee delta; check decimal handling",
+      "confidence": 0.7,
+      "requires_human": true,
+      "engine": "rules"
+    },
+    {
+      "break_type": "TIMING_LAG",
+      "symbol": "BTC",
+      "usd_at_risk": 279639.42,
+      "severity": "HIGH",
+      "category": "TIMING_LAG",
+      "likely_root_cause": "network congestion delayed confirmation past SLA",
+      "suggested_action": "no action if confirmed; monitor for SLA breach",
+      "confidence": 0.65,
+      "requires_human": true,
+      "engine": "rules"
+    },
+    {
+      "break_type": "MISSING_ONCHAIN",
+      "symbol": "BTC",
+      "usd_at_risk": 176287.1,
+      "severity": "HIGH",
+      "category": "MISSING_ONCHAIN",
+      "likely_root_cause": "settlement not yet broadcast to chain",
+      "suggested_action": "verify the broadcast queue; re-submit if stuck",
+      "confidence": 0.8,
+      "requires_human": true,
+      "engine": "rules"
+    },
+    {
+      "break_type": "TIMING_LAG",
+      "symbol": "BTC",
+      "usd_at_risk": 167966.91,
+      "severity": "HIGH",
+      "category": "TIMING_LAG",
+      "likely_root_cause": "network congestion delayed confirmation past SLA",
+      "suggested_action": "no action if confirmed; monitor for SLA breach",
+      "confidence": 0.65,
+      "requires_human": true,
+      "engine": "rules"
+    },
+    {
+      "break_type": "TIMING_LAG",
+      "symbol": "BTC",
+      "usd_at_risk": 161027.71,
+      "severity": "HIGH",
+      "category": "TIMING_LAG",
+      "likely_root_cause": "network congestion delayed confirmation past SLA",
+      "suggested_action": "no action if confirmed; monitor for SLA breach",
+      "confidence": 0.65,
+      "requires_human": true,
+      "engine": "rules"
+    },
+    {
+      "break_type": "DUPLICATE",
+      "symbol": "BTC",
+      "usd_at_risk": 145448.13,
+      "severity": "HIGH",
+      "category": "DUPLICATE",
+      "likely_root_cause": "retry double-broadcast produced two settlements",
+      "suggested_action": "void the duplicate; reconcile the net position",
+      "confidence": 0.85,
+      "requires_human": true,
+      "engine": "rules"
+    }
+  ],
+  "eval": {
+    "accuracy": 1.0,
+    "n": 55,
+    "per_class": {
+      "MISSING_ONCHAIN": {
+        "correct": 7,
+        "total": 7
+      },
+      "AMOUNT_MISMATCH": {
+        "correct": 12,
+        "total": 12
+      },
+      "DUPLICATE": {
+        "correct": 12,
+        "total": 12
+      },
+      "TIMING_LAG": {
+        "correct": 12,
+        "total": 12
+      },
+      "ORPHAN_ONCHAIN": {
+        "correct": 12,
+        "total": 12
+      }
+    }
+  },
+  "pipeline": {
+    "dbt_models": 17,
+    "dbt_tests": 23,
+    "break_types": 6,
+    "triage_engine": "rules"
+  }
+}

@@ -5,17 +5,24 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/jetbrains-mono/600.css";
+import "@fontsource/jetbrains-mono/700.css";
 import "../styles/global.css";
 import { profile } from "../data/content";
-const title = `${profile.name} — ${profile.role}`;
-const description = profile.sub;
+interface Props { title?: string; description?: string; themeColor?: string; }
+const {
+  title = `${profile.name} — ${profile.role}`,
+  description = profile.sub,
+  themeColor = "#ffffff",
+} = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content={themeColor} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />

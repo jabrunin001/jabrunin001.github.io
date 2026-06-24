@@ -51,6 +51,7 @@ export const projects = [
       "A crypto financial reconciliation mart where an off-chain double-entry ledger is reconciled against on-chain settlement and the breaks are the product. dbt models a star schema over DuckDB — Snowflake-ready — that classifies, ages, and prices every break, while an LLM triages the unresolved ones, advisory only and graded against ground-truth labels. Built with MetricFlow metrics, an Evidence dashboard, an Airflow DAG, and CI.",
     stack: ["dbt", "DuckDB", "Snowflake-ready", "Airflow", "Anthropic API"],
     links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/crypto-recon-mart/", icon: "demo" },
       { label: "GitHub", url: "https://github.com/jabrunin001/crypto-recon-mart", icon: "github" },
       { label: "Business value", url: "https://github.com/jabrunin001/crypto-recon-mart/blob/main/docs/business-value.md", icon: "external" },
     ],
