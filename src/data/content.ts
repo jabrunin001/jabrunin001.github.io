@@ -1,12 +1,12 @@
 export const profile = {
   name: "James Bruning",
-  role: "Senior Analytics Engineer",
+  role: "Senior Engineer",
   location: "Chicago, Illinois",
   email: "jimtbruning@gmail.com",
   github: "https://github.com/jabrunin001",
   linkedin: "https://www.linkedin.com/in/jtb96/",
   headline: "Trusted data for modern teams.",
-  sub: "I'm a Senior Analytics Engineer. I turn raw, messy source data into clean, tested datasets that teams can trust and decide on, usually with dbt, Snowflake, Spark, and Airflow.",
+  sub: "I'm a Senior Engineer. I turn raw, messy source data into clean, tested datasets that teams can trust and decide on, usually with dbt, Snowflake, Spark, and Airflow.",
 };
 
 export const stack = [
@@ -145,10 +145,10 @@ export const projects = [
   },
   {
     name: "llm-eval-pipeline",
-    tagline: "Analytics engineering for LLM evals",
+    tagline: "Evaluation pipeline for LLMs",
     motif: "chart",
     blurb:
-      "Analytics engineering for LLM evals: MMLU scored against three Claude models, modeled in dbt (staging to marts, with Wilson confidence intervals), and served as a live dashboard.",
+      "An LLM evaluation pipeline: MMLU scored against three Claude models, modeled in dbt (staging to marts, with Wilson confidence intervals), and served as a live dashboard.",
     stack: ["dbt", "DuckDB", "Anthropic API", "Streamlit"],
     links: [
       { label: "Live dashboard", url: "https://jabrunin001.github.io/llm-eval-pipeline/", icon: "demo" },
@@ -159,7 +159,7 @@ export const projects = [
 
 export const experience = [
   {
-    role: "Senior Data Engineer",
+    role: "Senior Engineer",
     org: "Northwestern University",
     period: "2021 — Present",
     bullets: [

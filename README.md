@@ -1,6 +1,6 @@
 # jamesbruning-portfolio
 
-Personal portfolio for **James Bruning, Senior Data Engineer**. Built with [Astro](https://astro.build).
+Personal portfolio for **James Bruning, Senior Engineer**. Built with [Astro](https://astro.build).
 
 ## Develop
 
