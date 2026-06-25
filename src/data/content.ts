@@ -44,6 +44,18 @@ export const valueProps = [
 
 export const projects = [
   {
+    name: "charge-contract",
+    tagline: "A data-contract gate for patient billing",
+    motif: "gate",
+    blurb:
+      "Data contracts at the FHIR/HL7 → warehouse boundary keep patient-billing financials honest. A charges batch that arrives in dollars instead of cents passes every dbt schema test — still numeric, unique, non-null — yet drives patient payments off by exactly 100x. A declarative contract carries each field's unit and magnitude floor, catching at the boundary what schema tests cannot. Built on dbt + DuckDB with a Python CLI, an Airflow DAG, an OpenMetadata catalog, and a CI job that proves the control.",
+    stack: ["dbt", "DuckDB", "Python", "Data Contracts", "CI"],
+    links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/charge-contract/", icon: "demo" },
+      { label: "GitHub", url: "https://github.com/jabrunin001/charge-contract", icon: "github" },
+    ],
+  },
+  {
     name: "crypto-recon-mart",
     tagline: "On-chain settlement, reconciled",
     motif: "chain",
