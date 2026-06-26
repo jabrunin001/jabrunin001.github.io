@@ -44,6 +44,18 @@ export const valueProps = [
 
 export const projects = [
   {
+    name: "chain-truth-layer",
+    tagline: "Reorgs can't lie here",
+    motif: "reorg",
+    blurb:
+      "A blockchain reorg double-counts a transaction and shows an orphaned illicit transfer as CONFIRMED — while every dbt schema test stays green. A finality gate, modeled across both account-based (EVM) and UTXO chains, reconciles balances to truth and rolls the orphaned transfer back. The proof runs twice over: once in a pure-Python core and once in the dbt status-column gate, with a CI job that fails if the gate ever stops catching the reorg. Built on dbt + DuckDB with a Typer CLI and an observability skateboard whose p99 times real point-lookups against the balances mart.",
+    stack: ["dbt", "DuckDB", "Python", "EVM + UTXO", "CI"],
+    links: [
+      { label: "Live demo", url: "https://jabrunin001.github.io/chain-truth-layer/", icon: "demo" },
+      { label: "GitHub", url: "https://github.com/jabrunin001/chain-truth-layer", icon: "github" },
+    ],
+  },
+  {
     name: "charge-contract",
     tagline: "A data-contract gate for patient billing",
     motif: "gate",
