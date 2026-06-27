@@ -48,7 +48,7 @@ export const projects = [
     tagline: "Event-time truth for live auctions",
     motif: "watermark",
     blurb:
-      "A pure-Python mini-Flink engine for Whatnot-style live auctions. A laggy phone delivers the winning $150 bid late, so a naive processing-time pipeline buckets it into the next window and crowns the wrong bidder at $140 — while the job still runs green. Event-time windowing with a 5s watermark and allowed lateness assigns the bid by when it happened and reconciles to a batch oracle; a beyond-lateness straggler is dropped to a side output and surfaced as a per-tenant SLO signal. Checkpoint/restore resumes from the committed offset into an idempotent sink for exactly-once, proven against the at-least-once double-count. Watermarks, keyed state, and per-show isolation, with a Typer CLI and CI that asserts the flip.",
+      "A pure-Python mini-Flink engine for live-stream auctions. A laggy phone delivers the winning $150 bid late, so a naive processing-time pipeline buckets it into the next window and crowns the wrong bidder at $140 — while the job still runs green. Event-time windowing with a 5s watermark and allowed lateness assigns the bid by when it happened and reconciles to a batch oracle; a beyond-lateness straggler is dropped to a side output and surfaced as a per-tenant SLO signal. Checkpoint/restore resumes from the committed offset into an idempotent sink for exactly-once, proven against the at-least-once double-count. Watermarks, keyed state, and per-show isolation, with a Typer CLI and CI that asserts the flip.",
     stack: ["Python", "Streaming", "Event-time", "Exactly-once", "DuckDB"],
     links: [
       { label: "Live demo", url: "https://jabrunin001.github.io/stream-truth-layer/", icon: "demo" },
